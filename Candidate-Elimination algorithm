@@ -1,0 +1,164 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPMJcS6fVluudYNN7mLiLX4",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/prathis0119/Machine-learning/blob/main/Candidate-Elimination%20algorithm\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Aj_gbpgfQOHy",
+        "outputId": "a6b3390a-9c40-4fc4-a6b1-bb0477aa6cee"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Example: ['Big', 'Red', 'Circle'] No\n",
+            "S = ['Ø', 'Ø', 'Ø']\n",
+            "G = [['Small', '?', '?'], ['?', 'Blue', '?'], ['?', '?', 'Triangle']]\n",
+            "\n",
+            "Example: ['Small', 'Red', 'Triangle'] No\n",
+            "S = ['Ø', 'Ø', 'Ø']\n",
+            "G = [['Small', 'Blue', '?'], ['Small', '?', 'Circle'], ['?', 'Blue', '?'], ['Big', '?', 'Triangle'], ['?', 'Blue', 'Triangle']]\n",
+            "\n",
+            "Example: ['Small', 'Red', 'Circle'] Yes\n",
+            "S = ['Small', 'Red', 'Circle']\n",
+            "G = [['Small', '?', 'Circle']]\n",
+            "\n",
+            "Example: ['Big', 'Blue', 'Circle'] No\n",
+            "S = ['Small', 'Red', 'Circle']\n",
+            "G = [['Small', '?', 'Circle']]\n",
+            "\n",
+            "Example: ['Small', 'Blue', 'Circle'] Yes\n",
+            "S = ['Small', '?', 'Circle']\n",
+            "G = [['Small', '?', 'Circle']]\n",
+            "\n",
+            "Final Specific Boundary:\n",
+            "S = ['Small', '?', 'Circle']\n",
+            "\n",
+            "Final General Boundary:\n",
+            "G = [['Small', '?', 'Circle']]\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Candidate Elimination Algorithm\n",
+        "\n",
+        "data = [\n",
+        "    [\"Big\", \"Red\", \"Circle\", \"No\"],\n",
+        "    [\"Small\", \"Red\", \"Triangle\", \"No\"],\n",
+        "    [\"Small\", \"Red\", \"Circle\", \"Yes\"],\n",
+        "    [\"Big\", \"Blue\", \"Circle\", \"No\"],\n",
+        "    [\"Small\", \"Blue\", \"Circle\", \"Yes\"]\n",
+        "]\n",
+        "\n",
+        "S = [\"Ø\", \"Ø\", \"Ø\"]\n",
+        "G = [[\"?\", \"?\", \"?\"]]\n",
+        "\n",
+        "\n",
+        "def covers(h, x):\n",
+        "    for i in range(3):\n",
+        "        if h[i] != \"?\" and h[i] != x[i]:\n",
+        "            return False\n",
+        "    return True\n",
+        "\n",
+        "\n",
+        "for row in data:\n",
+        "\n",
+        "    x = row[:3]\n",
+        "    label = row[3]\n",
+        "\n",
+        "    if label == \"Yes\":\n",
+        "\n",
+        "        # Generalize S\n",
+        "        if S[0] == \"Ø\":\n",
+        "            S = x.copy()\n",
+        "        else:\n",
+        "            for i in range(3):\n",
+        "                if S[i] != x[i]:\n",
+        "                    S[i] = \"?\"\n",
+        "\n",
+        "        # Remove G hypotheses that don't cover positive example\n",
+        "        G = [g for g in G if covers(g, x)]\n",
+        "\n",
+        "    else:\n",
+        "\n",
+        "        new_G = []\n",
+        "\n",
+        "        for g in G:\n",
+        "            if covers(g, x):\n",
+        "\n",
+        "                # Specialize G\n",
+        "                for i in range(3):\n",
+        "                    if g[i] == \"?\":\n",
+        "\n",
+        "                        h = g.copy()\n",
+        "\n",
+        "                        # Choose a value different from negative example\n",
+        "                        values = [\"Big\", \"Small\"] if i == 0 else \\\n",
+        "                                 [\"Red\", \"Blue\"] if i == 1 else \\\n",
+        "                                 [\"Circle\", \"Triangle\"]\n",
+        "\n",
+        "                        for value in values:\n",
+        "                            if value != x[i]:\n",
+        "                                h[i] = value\n",
+        "\n",
+        "                                # Keep hypothesis compatible with S\n",
+        "                                valid = True\n",
+        "\n",
+        "                                for j in range(3):\n",
+        "                                    if S[j] != \"Ø\" and S[j] != \"?\":\n",
+        "                                        if h[j] != \"?\" and h[j] != S[j]:\n",
+        "                                            valid = False\n",
+        "\n",
+        "                                if valid:\n",
+        "                                    new_G.append(h)\n",
+        "\n",
+        "            else:\n",
+        "                new_G.append(g)\n",
+        "\n",
+        "        G = new_G\n",
+        "\n",
+        "    print(\"Example:\", x, label)\n",
+        "    print(\"S =\", S)\n",
+        "    print(\"G =\", G)\n",
+        "    print()\n",
+        "\n",
+        "\n",
+        "print(\"Final Specific Boundary:\")\n",
+        "print(\"S =\", S)\n",
+        "\n",
+        "print(\"\\nFinal General Boundary:\")\n",
+        "print(\"G =\", G)"
+      ]
+    }
+  ]
+}
