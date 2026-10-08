@@ -1,0 +1,98 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyN7I+8mgbss3dpsseTvYNWY",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/prathis0119/Machine-learning/blob/main/Find%20S%20algorithm\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "vm6kOdbWcJe-",
+        "outputId": "233967e6-0389-4284-a02e-d782491b13ab",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "FIND-S Algorithm\n",
+            "-----------------\n",
+            "Hypothesis: ['Sunny', 'Warm', 'Normal', 'Strong', 'Warm', 'Same']\n",
+            "Hypothesis: ['Sunny', 'Warm', '?', 'Strong', 'Warm', 'Same']\n",
+            "Hypothesis: ['Sunny', 'Warm', '?', 'Strong', '?', '?']\n",
+            "\n",
+            "Final Most Specific Hypothesis:\n",
+            "['Sunny', 'Warm', '?', 'Strong', '?', '?']\n"
+          ]
+        }
+      ],
+      "source": [
+        "# FIND-S Algorithm\n",
+        "\n",
+        "data = [\n",
+        "    [\"Sunny\", \"Warm\", \"Normal\", \"Strong\", \"Warm\", \"Same\", \"Yes\"],\n",
+        "    [\"Sunny\", \"Warm\", \"High\", \"Strong\", \"Warm\", \"Same\", \"Yes\"],\n",
+        "    [\"Rainy\", \"Cold\", \"High\", \"Strong\", \"Warm\", \"Change\", \"No\"],\n",
+        "    [\"Sunny\", \"Warm\", \"High\", \"Strong\", \"Cool\", \"Change\", \"Yes\"]\n",
+        "]\n",
+        "\n",
+        "# Initial hypothesis\n",
+        "h = [\"Ø\", \"Ø\", \"Ø\", \"Ø\", \"Ø\", \"Ø\"]\n",
+        "\n",
+        "print(\"FIND-S Algorithm\")\n",
+        "print(\"-----------------\")\n",
+        "\n",
+        "# Process each training example\n",
+        "for row in data:\n",
+        "\n",
+        "    attributes = row[:-1]\n",
+        "    target = row[-1]\n",
+        "\n",
+        "    # Consider only positive examples\n",
+        "    if target == \"Yes\":\n",
+        "\n",
+        "        # First positive example\n",
+        "        if h[0] == \"Ø\":\n",
+        "            h = attributes.copy()\n",
+        "\n",
+        "        else:\n",
+        "            # Generalize hypothesis\n",
+        "            for i in range(len(h)):\n",
+        "                if h[i] != attributes[i]:\n",
+        "                    h[i] = \"?\"\n",
+        "\n",
+        "        print(\"Hypothesis:\", h)\n",
+        "\n",
+        "# Display final hypothesis\n",
+        "print(\"\\nFinal Most Specific Hypothesis:\")\n",
+        "print(h)"
+      ]
+    }
+  ]
+}
