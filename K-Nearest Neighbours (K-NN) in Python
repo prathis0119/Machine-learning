@@ -1,0 +1,82 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNlsn2DEusmGTXgayxf6Wht",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/prathis0119/Machine-learning/blob/main/K-Nearest%20Neighbours%20(K-NN)%20in%20Python\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "xV1Gbd5cq6WT",
+        "outputId": "9c777381-f76d-4b10-aaf1-0a6026fd17f6"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Actual values: [1 0 2 1 1 0 1 2 1 1 2 0 0 0 0 1 2 1 1 2 0 2 0 2 2 2 2 2 0 0]\n",
+            "Predicted values: [1 0 2 1 1 0 1 2 1 1 2 0 0 0 0 1 2 1 1 2 0 2 0 2 2 2 2 2 0 0]\n",
+            "Accuracy: 100.0 %\n"
+          ]
+        }
+      ],
+      "source": [
+        "from sklearn.neighbors import KNeighborsClassifier\n",
+        "from sklearn.model_selection import train_test_split\n",
+        "from sklearn.datasets import load_iris\n",
+        "from sklearn.metrics import accuracy_score\n",
+        "\n",
+        "# Load dataset\n",
+        "iris = load_iris()\n",
+        "X = iris.data\n",
+        "y = iris.target\n",
+        "\n",
+        "# Split dataset\n",
+        "X_train, X_test, y_train, y_test = train_test_split(\n",
+        "    X, y, test_size=0.2, random_state=42\n",
+        ")\n",
+        "\n",
+        "# Create K-NN classifier\n",
+        "knn = KNeighborsClassifier(n_neighbors=3)\n",
+        "\n",
+        "# Train the model\n",
+        "knn.fit(X_train, y_train)\n",
+        "\n",
+        "# Predict output\n",
+        "y_pred = knn.predict(X_test)\n",
+        "\n",
+        "# Display results\n",
+        "print(\"Actual values:\", y_test)\n",
+        "print(\"Predicted values:\", y_pred)\n",
+        "print(\"Accuracy:\", accuracy_score(y_test, y_pred) * 100, \"%\")"
+      ]
+    }
+  ]
+}
