@@ -1,0 +1,84 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMiXoDtjHa/rXdS7jJahZ//",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/prathis0119/Machine-learning/blob/main/Logistic%20Regression%20(LR)%20algorithm\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "wzAcIcGmsBjA",
+        "outputId": "5f3f4e67-f5b5-4ac8-96ed-f70ed77a6226"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Actual Output: [1 1 1 0 0 0 0 1 0 0 0 0 1 0 1 0 1 1 0 0]\n",
+            "Predicted Output: [1 1 1 0 0 0 0 1 0 0 0 0 1 0 1 0 1 1 0 0]\n",
+            "Accuracy: 100.0 %\n"
+          ]
+        }
+      ],
+      "source": [
+        "from sklearn.datasets import load_iris\n",
+        "from sklearn.model_selection import train_test_split\n",
+        "from sklearn.linear_model import LogisticRegression\n",
+        "from sklearn.metrics import accuracy_score\n",
+        "\n",
+        "# Load dataset\n",
+        "iris = load_iris()\n",
+        "\n",
+        "# Select two classes for binary classification\n",
+        "X = iris.data[iris.target != 2]\n",
+        "y = iris.target[iris.target != 2]\n",
+        "\n",
+        "# Split the dataset\n",
+        "X_train, X_test, y_train, y_test = train_test_split(\n",
+        "    X, y, test_size=0.2, random_state=42\n",
+        ")\n",
+        "\n",
+        "# Create Logistic Regression model\n",
+        "model = LogisticRegression()\n",
+        "\n",
+        "# Train the model\n",
+        "model.fit(X_train, y_train)\n",
+        "\n",
+        "# Predict output\n",
+        "y_pred = model.predict(X_test)\n",
+        "\n",
+        "# Display results\n",
+        "print(\"Actual Output:\", y_test)\n",
+        "print(\"Predicted Output:\", y_pred)\n",
+        "print(\"Accuracy:\", accuracy_score(y_test, y_pred) * 100, \"%\")"
+      ]
+    }
+  ]
+}
