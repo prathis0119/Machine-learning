@@ -1,0 +1,85 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOD+2r5LvBC6MZgmFFPeZd4",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/prathis0119/Machine-learning/blob/main/Implement%20Expectation%20%26%20Maximization%20Algorithm\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "MEfKUi7ctqRf",
+        "outputId": "8033b978-ffa1-43c8-8430-8b904ef722c3"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Cluster Labels: [0 0 0 0 0 1 1 1 1 1]\n",
+            "Cluster Means:\n",
+            "[[2.]\n",
+            " [9.]]\n",
+            "Converged: True\n",
+            "Number of Iterations: 2\n"
+          ]
+        }
+      ],
+      "source": [
+        "import numpy as np\n",
+        "from sklearn.mixture import GaussianMixture\n",
+        "\n",
+        "# Dataset\n",
+        "X = np.array([\n",
+        "    [1.0], [1.5], [2.0], [2.5], [3.0],\n",
+        "    [8.0], [8.5], [9.0], [9.5], [10.0]\n",
+        "])\n",
+        "\n",
+        "# Create EM model\n",
+        "model = GaussianMixture(\n",
+        "    n_components=2,\n",
+        "    random_state=42\n",
+        ")\n",
+        "\n",
+        "# Train the model using EM algorithm\n",
+        "model.fit(X)\n",
+        "\n",
+        "# Predict clusters\n",
+        "labels = model.predict(X)\n",
+        "\n",
+        "# Display results\n",
+        "print(\"Cluster Labels:\", labels)\n",
+        "print(\"Cluster Means:\")\n",
+        "print(model.means_)\n",
+        "\n",
+        "print(\"Converged:\", model.converged_)\n",
+        "print(\"Number of Iterations:\", model.n_iter_)"
+      ]
+    }
+  ]
+}
